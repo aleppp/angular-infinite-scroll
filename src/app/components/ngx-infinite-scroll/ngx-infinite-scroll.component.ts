@@ -18,11 +18,13 @@ export class NgxInfiniteScrollComponent implements OnInit {
 
   loadData = () => {
     this.toggleLoading();
-    this.paginationService.getItems(this.currentPage, this.itemsPerPage).subscribe({
-      next: response => this.items = response,
-      error: err => console.log(err),
-      complete: () => this.toggleLoading()
-    })
+    this.paginationService
+      .getItems(this.currentPage, this.itemsPerPage)
+      .subscribe({
+        next: (response) => (this.items = response),
+        error: (err) => console.log(err),
+        complete: () => this.toggleLoading(),
+      });
   };
 
   constructor(private paginationService: PaginationDummyService) {}
@@ -30,4 +32,21 @@ export class NgxInfiniteScrollComponent implements OnInit {
   ngOnInit(): void {
     this.loadData();
   }
+
+  //this method will be called on scrolling the page
+  appendData = () => {
+    this.toggleLoading();
+    this.paginationService
+      .getItems(this.currentPage, this.itemsPerPage)
+      .subscribe({
+        next: (response) => (this.items = [...this.items, ...response]),
+        error: (err) => console.log(err),
+        complete: () => this.toggleLoading(),
+      });
+  };
+
+  onScroll = () => {
+    this.currentPage++;
+    this.appendData();
+  };
 }
