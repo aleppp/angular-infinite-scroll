@@ -1,1 +1,10 @@
-<p>ngx-infinite-scroll works!</p>
+<div
+  class="search-results"
+  infinite-scroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="500"
+  (scrolled)="onScroll()"
+  [scrollWindow]="false"
+>
+  <div class="data-card" *ngFor="let item of items">{{ item }}</div>
+</div>
